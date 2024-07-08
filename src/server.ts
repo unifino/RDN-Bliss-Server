@@ -2,6 +2,7 @@ import * as express                     from "express"
 import * as TS                          from './types/types'
 import * as CTS                         from './types/common'
 import * as db                          from './Departments/DataBase/db'
+import { error } from "console";
 
 // -- ========================================================================= INIT =======
 
@@ -33,9 +34,29 @@ app.get( '/getPatients', ( req: express.Request, res: express.Response ) => {
     // .. Process Request by DB Department
     db.getPatients()
     // .. everything is good
-    .then( patients => res.json( { status: 200, answer: patients } ) )
+    .then( patients => res.json( { status: 200, scc: patients } ) )
     // .. report error
-    .catch( err => res.json( { status: 500, reason: err + "" } ) );
+    .catch( err => res.json( { status: 500, err: err + "" } ) );
+
+} );
+
+// -- ============================================================ Get Patients List =======
+
+app.post( '/logIn', async ( req: express.Request, res: express.Response ) => {
+
+    // .. requests | assign requests from POST
+    const username = req.body.username as string;
+    const password = req.body.password as string;
+    
+    // ! remove it
+    await new Promise( _ => setTimeout( _, 1000 ) )
+
+    // .. Process Request by DB Department
+    db.logIn( username, password )
+    // .. everything is good
+    .then( user => res.json( { status: 200, scc: user } ) )
+    // .. report error
+    .catch( err => res.json( { status: 500, err: err + "" } ) );
 
 } );
 
