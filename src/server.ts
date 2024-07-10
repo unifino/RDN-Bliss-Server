@@ -24,7 +24,7 @@ app.use( bodyParser.urlencoded( {
 
 // -- ============================================================ Get Patients List =======
 
-app.get( '/getPatients', ( req: express.Request, res: express.Response ) => {
+app.get( CTS.Get.getPatients, ( req: express.Request, res: express.Response ) => {
 
     // .. requests | assign requests from POST
     const email = req.body.e as string;
@@ -40,7 +40,7 @@ app.get( '/getPatients', ( req: express.Request, res: express.Response ) => {
 
 // -- ============================================================ Get Patients List =======
 
-app.post( '/logIn', async ( req: express.Request, res: express.Response ) => {
+app.post( CTS.Post.logIn, async ( req: express.Request, res: express.Response ) => {
 
     // .. requests | assign requests from POST
     const userType = req.body.userType as CTS.UserTypes;
@@ -61,6 +61,9 @@ app.post( '/logIn', async ( req: express.Request, res: express.Response ) => {
 
 // -- ============================================================ Listening on Port =======
 
-app.listen( PORT, () => console.info( `running on ${ PORT } ...` ) ); 
+app.listen( PORT, () => {
+    console.clear()
+    console.info( `running on ${ PORT } ...` )
+} ); 
 
 // -- ========================================================================= FINE =======

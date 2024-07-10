@@ -1,6 +1,16 @@
 
 // -- =====================================================================================
 
+export enum Post {
+    logIn       = "/logIn",
+}
+
+export enum Get {
+    getPatients = "/getPatients",
+}
+
+// -- =====================================================================================
+
 export enum Gender { "male", "female", null }
 
 export type Patients = {
