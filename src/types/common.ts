@@ -16,4 +16,7 @@ export type Patients = {
     name?: string
 }
 
+// .. declare UserType
+export enum UserTypes { "Dietitian", "Patient", null }
+
 // -- =====================================================================================

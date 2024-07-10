@@ -1,8 +1,6 @@
 import * as express                     from "express"
-import * as TS                          from './types/types'
 import * as CTS                         from './types/common'
 import * as db                          from './Departments/DataBase/db'
-import { error } from "console";
 
 // -- ========================================================================= INIT =======
 
@@ -45,6 +43,7 @@ app.get( '/getPatients', ( req: express.Request, res: express.Response ) => {
 app.post( '/logIn', async ( req: express.Request, res: express.Response ) => {
 
     // .. requests | assign requests from POST
+    const userType = req.body.userType as CTS.UserTypes;
     const username = req.body.username as string;
     const password = req.body.password as string;
     
@@ -52,7 +51,7 @@ app.post( '/logIn', async ( req: express.Request, res: express.Response ) => {
     await new Promise( _ => setTimeout( _, 1000 ) )
 
     // .. Process Request by DB Department
-    db.logIn( username, password )
+    db.logIn( userType, username, password )
     // .. everything is good
     .then( user => res.json( { status: 200, scc: user } ) )
     // .. report error

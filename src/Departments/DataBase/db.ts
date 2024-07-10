@@ -27,10 +27,11 @@ export const getPatients = () => {
 
 // -- ======================================================================================
 
-export const logIn = ( username: string, password: string ) => {
+export const logIn = ( userType: CTS.UserTypes, username: string, password: string ) => {
     return new Promise ( (rs, rx) => {
         // ! Consider it
-        const qry = `SELECT * FROM Patients WHERE username = '${username}' AND password = '${password}'`
+        const qry = `SELECT * FROM ${ CTS.UserTypes[ userType ] }s
+            WHERE username = '${username}' AND password = '${password}'`
         db.query( qry, ( err, r: Result ) => {
             if ( err ) rx( "E001 " + err )
             else if ( r.rows.length === 0 ) rx( "User Not Found" )
