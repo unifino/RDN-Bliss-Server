@@ -11,7 +11,7 @@ export enum Get {
 
 // -- =====================================================================================
 
-export enum Gender { "male", "female", null }
+export enum Gender { null = "Prefer not to Answer", male = "Male", female = "Female" }
 
 export type Patients = {
     id: number
@@ -24,6 +24,7 @@ export type Patients = {
     gender: Gender
 
     name?: string
+    userType?: UserTypes
 }
 
 export type Dietitians = {
@@ -37,6 +38,7 @@ export type Dietitians = {
     gender: Gender
 
     name?: string
+    userType?: UserTypes
 }
 
 export type UserData = Dietitians | Patients; 
