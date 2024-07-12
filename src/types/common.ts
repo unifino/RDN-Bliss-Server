@@ -2,7 +2,8 @@
 // -- =====================================================================================
 
 export enum Post {
-    logIn       = "/logIn",
+    Login       = "/Login",
+    Register    = "/Register",
 }
 
 export enum Get {
@@ -20,7 +21,7 @@ export type Patients = {
     password: string
     firstname: string
     lastname: string
-    age: string
+    birthday: string
     gender: Gender
 
     name?: string
@@ -34,7 +35,7 @@ export type Dietitians = {
     password: string
     firstname: string
     lastname: string
-    age: string
+    birthday: string
     gender: Gender
 
     name?: string

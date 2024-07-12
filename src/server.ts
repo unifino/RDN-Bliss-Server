@@ -1,6 +1,7 @@
 import * as express                     from "express"
 import * as CTS                         from './types/common'
 import * as db                          from './Departments/DataBase/db'
+import { log } from "console";
 
 // -- ========================================================================= INIT =======
 
@@ -24,6 +25,44 @@ app.use( bodyParser.urlencoded( {
 
 // -- ============================================================ Get Patients List =======
 
+app.post( CTS.Post.Register, async ( req: express.Request, res: express.Response ) => {
+
+    // .. requests | assign requests from POST
+    const userType = req.body.userType as CTS.UserTypes;
+    const username = req.body.username as string;
+    const password = req.body.password as string;
+    
+    console.log( req.body );
+    
+    // // .. Process Request by DB Department
+    // db.logIn( userType, username, password )
+    // // .. everything is good
+    // .then( user => res.json( { status: 200, scc: user } ) )
+    // // .. report error
+    // .catch( err => res.json( { status: 500, err: err + "" } ) );
+
+} );
+
+// -- ============================================================ Get Patients List =======
+
+app.post( CTS.Post.Login, async ( req: express.Request, res: express.Response ) => {
+
+    // .. requests | assign requests from POST
+    const userType = req.body.userType as CTS.UserTypes;
+    const username = req.body.username as string;
+    const password = req.body.password as string;
+    
+    // .. Process Request by DB Department
+    db.logIn( userType, username, password )
+    // .. everything is good
+    .then( user => res.json( { status: 200, scc: user } ) )
+    // .. report error
+    .catch( err => res.json( { status: 500, err: err + "" } ) );
+
+} );
+
+// -- ============================================================ Get Patients List =======
+
 app.get( CTS.Get.getPatients, ( req: express.Request, res: express.Response ) => {
 
     // .. requests | assign requests from POST
@@ -33,27 +72,6 @@ app.get( CTS.Get.getPatients, ( req: express.Request, res: express.Response ) =>
     db.getPatients()
     // .. everything is good
     .then( patients => res.json( { status: 200, scc: patients } ) )
-    // .. report error
-    .catch( err => res.json( { status: 500, err: err + "" } ) );
-
-} );
-
-// -- ============================================================ Get Patients List =======
-
-app.post( CTS.Post.logIn, async ( req: express.Request, res: express.Response ) => {
-
-    // .. requests | assign requests from POST
-    const userType = req.body.userType as CTS.UserTypes;
-    const username = req.body.username as string;
-    const password = req.body.password as string;
-    
-    // ! remove it
-    await new Promise( _ => setTimeout( _, 1000 ) )
-
-    // .. Process Request by DB Department
-    db.logIn( userType, username, password )
-    // .. everything is good
-    .then( user => res.json( { status: 200, scc: user } ) )
     // .. report error
     .catch( err => res.json( { status: 500, err: err + "" } ) );
 
