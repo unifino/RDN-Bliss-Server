@@ -28,18 +28,14 @@ app.use( bodyParser.urlencoded( {
 app.post( CTS.Post.Register, async ( req: express.Request, res: express.Response ) => {
 
     // .. requests | assign requests from POST
-    const userType = req.body.userType as CTS.UserTypes;
-    const username = req.body.username as string;
-    const password = req.body.password as string;
-    
-    console.log( req.body );
+    const userData: CTS.UserData = req.body
     
     // // .. Process Request by DB Department
-    // db.logIn( userType, username, password )
-    // // .. everything is good
-    // .then( user => res.json( { status: 200, scc: user } ) )
-    // // .. report error
-    // .catch( err => res.json( { status: 500, err: err + "" } ) );
+    db.Register( userData )
+    // .. everything is good
+    .then( user => res.json( { status: 200, scc: user } ) )
+    // .. report error
+    .catch( err => res.json( { status: 500, err: err + "" } ) );
 
 } );
 
@@ -53,7 +49,7 @@ app.post( CTS.Post.Login, async ( req: express.Request, res: express.Response ) 
     const password = req.body.password as string;
     
     // .. Process Request by DB Department
-    db.logIn( userType, username, password )
+    db.Login( userType, username, password )
     // .. everything is good
     .then( user => res.json( { status: 200, scc: user } ) )
     // .. report error

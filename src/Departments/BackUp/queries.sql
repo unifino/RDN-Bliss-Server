@@ -1,28 +1,30 @@
 CREATE TYPE Gender AS ENUM ( 'male', 'female' );
 
 CREATE TABLE Dietitians (
+    id BIGSERIAL PRIMARY KEY,
     email varchar UNIQUE NOT NULL,
     username varchar UNIQUE NOT NULL,
     password varchar  NOT NULL,
     firstName varchar,
     lastName varchar,
-    age int,
+    birthDay varchar,
 	gender Gender
 );
 
 CREATE TABLE Patients (
+    id BIGSERIAL PRIMARY KEY,  
     email varchar UNIQUE NOT NULL,
     username varchar UNIQUE NOT NULL,
     password varchar NOT NULL,
     firstName varchar,
     lastName varchar,
-    age int,
+    birthDay varchar,
 	gender Gender
 );
 
 --  =======================================================================================
 
-INSERT INTO Patients (email, username, password, firstName, lastName, age, gender) VALUES
+INSERT INTO Patients (email, username, password, firstName, lastName, birthDay, gender) VALUES
 ( 'x', 'x', 'x', 'Hatef', null, 37, 'male' ),
 ( 'y', 'y', 'y', 'Fatemeh', null, 24, 'female' ),
 ( 'z', 'z', 'z', 'Ali', null, 37, 'male' ),
