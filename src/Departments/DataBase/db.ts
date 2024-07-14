@@ -48,14 +48,10 @@ export const Register = ( userData: CTS.UserData ) => {
         CheckEmailOrUserExists( userData )
         .then( () => {
             InsertNewUser( userData )
+            .then( () => rs( "Registered" ) )
+            .catch( err => rx(err) )
         } )
         .catch( msg => rx( msg ) )
-        // db.query( qry, ( err, r: Result ) => {
-        //     if ( err ) rx( "E001 " + err )
-        //     else if ( r.rows.length === 0 ) rx( "User Not Found" )
-        //     else if ( r.rows.length === 1 ) rs( r.rows[0] )
-        //     else rx( "E002 : Duplicated Users!" )
-        // } )
     } );
 }
 
@@ -82,7 +78,6 @@ export const CheckEmailOrUserExists = ( userData: CTS.UserData ) => {
 
 export const InsertNewUser = ( userData: CTS.UserData ) => {
     return new Promise ( (rs, rx) => {
-        // const inserts: CTS.UserData = JSON.parse( JSON.stringify( userData ) )
         const subQry = `(email, username, password, firstName, lastName, birthDay, gender) VALUES 
         (
             ${userData.email ? "'" + userData.email + "'" : null},
@@ -93,13 +88,11 @@ export const InsertNewUser = ( userData: CTS.UserData ) => {
             ${userData.birthday ? "'" + userData.birthday + "'" : null},
             ${userData.gender ? "'" + userData.gender.toLowerCase() + "'" : null}
         )`
-        console.log( subQry );
-        
         // .. chcek existence
         const qry = `INSERT INTO ${ CTS.UserTypes[ userData.userType ] }s ${subQry}`
         db.query( qry, ( err, r: Result ) => {
             if ( err ) rx( "E003 " + err )
-            else rs( "User INSERTED: " + JSON.stringify( r.rows ) )
+            else rs( r.rows[0] )
         } )
     } );
 }
