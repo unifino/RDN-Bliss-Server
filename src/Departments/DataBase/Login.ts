@@ -1,5 +1,7 @@
 import { db }                           from './Credit'
 import * as CTS                         from '../../types/common'
+import { hashPassword, salt }           from '../../mixins/Tools'
+import * as Users                       from './Users'
 
 // -- ======================================================================================
 
@@ -17,27 +19,30 @@ type Result = {
 
 // -- ======================================================================================
 
-export const getPatients = () => {
+export const Login = ( sentData: CTS.UserData ) => {
     return new Promise ( (rs, rx) => {
-        const qry = `SELECT * FROM Patients`;
-        // WHERE email = '${email}'
-        db.query( qry, ( err, r: Result ) => err ? rx( "E001 " + err ) : rs( r.rows ) );
+        Users.getUserByUserName( sentData )
+        .then( usr => checkPassword( usr, sentData.password as string ) )
+        .then( usr => rs( usr ) )
+        .catch( err => rx( err ) )
     } );
 }
 
 // -- ======================================================================================
 
-export const Login = ( userType: CTS.UserTypes, username: string, password: string ) => {
+const checkPassword = ( userData: CTS.UserData, check: string ): Promise<CTS.UserData> => {
+    
     return new Promise ( (rs, rx) => {
-        const qry = `SELECT * FROM ${ CTS.UserTypes[ userType ] }s
-            WHERE username = '${username}' AND password = '${password}'`
-        db.query( qry, ( err, r: Result ) => {
-            if ( err ) rx( "E001 " + err )
-            else if ( r.rows.length === 0 ) rx( "User Not Found" )
-            else if ( r.rows.length === 1 ) rs( r.rows[0] )
-            else rx( "E002 : Duplicated Users!" )
-        } )
+        
+        const org = userData.password as CTS.HashedPass
+        const check_hash = hashPassword( check, org.salt, org.iterations )
+        
+        // .. chcek password
+        if ( org.hash === check_hash.hash ) rs( userData )
+        else rx( "User Not Found: Password Error" )
+
     } );
+
 }
 
 // -- ======================================================================================
@@ -45,7 +50,7 @@ export const Login = ( userType: CTS.UserTypes, username: string, password: stri
 export const Register = ( userData: CTS.UserData ) => {
     return new Promise ( (rs, rx) => {
         // .. chcek existence
-        CheckEmailOrUserExists( userData )
+        Users.CheckEmailOrUserExists( userData )
         .then( () => {
             InsertNewUser( userData )
             .then( () => rs( "Registered" ) )
@@ -57,44 +62,32 @@ export const Register = ( userData: CTS.UserData ) => {
 
 // -- ======================================================================================
 
-export const CheckEmailOrUserExists = ( userData: CTS.UserData ) => {
+const InsertNewUser = async ( userData: CTS.UserData ) => {
+    
     return new Promise ( (rs, rx) => {
-        // .. chcek existence
-        const qry = `SELECT * FROM ${ CTS.UserTypes[ userData.userType ] }s
-            WHERE username = '${ userData.username }' OR email = '${ userData.email }'`
-        db.query( qry, ( err, r: Result ) => {
-            if ( err ) rx( "E003 " + err )
-            else if ( r.rows.length === 0 ) rs( "User Not Found" )
-            else {
-                let msg = ""
-                if ( r.rows[0].username === userData.username ) msg += "Username "
-                if ( r.rows[0].email === userData.email ) msg += "Email "
-                rx( msg + "Exists" )
-            }
-        } )
-    } );
-}
-// -- ======================================================================================
 
-export const InsertNewUser = ( userData: CTS.UserData ) => {
-    return new Promise ( (rs, rx) => {
-        const subQry = `(email, username, password, firstName, lastName, birthDay, gender) VALUES 
-        (
+        const hashData = hashPassword( userData.password as string, salt );
+
+        const subQry = `( email, username, password, firstName, lastName, birthDay, gender )
+        VALUES (
             ${userData.email ? "'" + userData.email + "'" : null},
             ${userData.username ? "'" + userData.username + "'" : null},
-            '${userData.password}',
+            '${ JSON.stringify( hashData ) }',
             ${userData.firstname ? "'" + userData.firstname + "'" : null},
             ${userData.lastname ? "'" + userData.lastname + "'" : null},
             ${userData.birthday ? "'" + userData.birthday + "'" : null},
             ${userData.gender ? "'" + userData.gender.toLowerCase() + "'" : null}
         )`
+
         // .. chcek existence
         const qry = `INSERT INTO ${ CTS.UserTypes[ userData.userType ] }s ${subQry}`
         db.query( qry, ( err, r: Result ) => {
-            if ( err ) rx( "E003 " + err )
+            if ( err ) rx( "E.L.01 " + err + "\n" + qry )
             else rs( r.rows[0] )
         } )
+    
     } );
+
 }
 
 // -- ======================================================================================

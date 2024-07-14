@@ -10,6 +10,8 @@ export enum Get {
     getPatients = "/getPatients",
 }
 
+export type HashedPass = { hash: string, salt: string, iterations: number } 
+
 // -- =====================================================================================
 
 export enum Gender { null = "Prefer not to Answer", male = "Male", female = "Female" }
@@ -18,7 +20,7 @@ export type Patients = {
     id: number
     email: string
     username: string
-    password: string
+    password: string|HashedPass
     firstname: string
     lastname: string
     birthday: string
@@ -32,7 +34,7 @@ export type Dietitians = {
     id: number
     email: string
     username: string
-    password: string
+    password: string|HashedPass
     firstname: string
     lastname: string
     birthday: string

@@ -1,7 +1,7 @@
 import * as express                     from "express"
 import * as CTS                         from './types/common'
-import * as db                          from './Departments/DataBase/db'
-import { log } from "console";
+import * as Login                       from './Departments/DataBase/Login'
+import * as Users                       from './Departments/DataBase/Users'
 
 // -- ========================================================================= INIT =======
 
@@ -31,7 +31,7 @@ app.post( CTS.Post.Register, async ( req: express.Request, res: express.Response
     const userData: CTS.UserData = req.body
     
     // // .. Process Request by DB Department
-    db.Register( userData )
+    Login.Register( userData )
     // .. everything is good
     .then( user => res.json( { status: 200, scc: user } ) )
     // .. report error
@@ -44,12 +44,10 @@ app.post( CTS.Post.Register, async ( req: express.Request, res: express.Response
 app.post( CTS.Post.Login, async ( req: express.Request, res: express.Response ) => {
 
     // .. requests | assign requests from POST
-    const userType = req.body.userType as CTS.UserTypes;
-    const username = req.body.username as string;
-    const password = req.body.password as string;
+    const userData = req.body as CTS.UserData;
     
     // .. Process Request by DB Department
-    db.Login( userType, username, password )
+    Login.Login( userData )
     // .. everything is good
     .then( user => res.json( { status: 200, scc: user } ) )
     // .. report error
@@ -65,7 +63,7 @@ app.get( CTS.Get.getPatients, ( req: express.Request, res: express.Response ) =>
     const email = req.body.e as string;
     
     // .. Process Request by DB Department
-    db.getPatients()
+    Users.getPatients()
     // .. everything is good
     .then( patients => res.json( { status: 200, scc: patients } ) )
     // .. report error

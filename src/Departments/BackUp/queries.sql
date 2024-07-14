@@ -2,23 +2,23 @@ CREATE TYPE Gender AS ENUM ( 'male', 'female' );
 
 CREATE TABLE Dietitians (
     id BIGSERIAL PRIMARY KEY,
-    email varchar UNIQUE NOT NULL,
-    username varchar UNIQUE NOT NULL,
-    password varchar  NOT NULL,
-    firstName varchar,
-    lastName varchar,
-    birthDay varchar,
+    email VARCHAR UNIQUE NOT NULL,
+    username VARCHAR UNIQUE NOT NULL,
+    password JSONB NOT NULL,
+    firstName VARCHAR,
+    lastName VARCHAR,
+    birthDay VARCHAR,
 	gender Gender
 );
 
 CREATE TABLE Patients (
     id BIGSERIAL PRIMARY KEY,  
-    email varchar UNIQUE NOT NULL,
-    username varchar UNIQUE NOT NULL,
-    password varchar NOT NULL,
-    firstName varchar,
-    lastName varchar,
-    birthDay varchar,
+    email VARCHAR UNIQUE NOT NULL,
+    username VARCHAR UNIQUE NOT NULL,
+    password JSONB NOT NULL,
+    firstName VARCHAR,
+    lastName VARCHAR,
+    birthDay VARCHAR,
 	gender Gender
 );
 

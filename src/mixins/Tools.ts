@@ -1,19 +1,25 @@
-// const bcrypt = require(‘bcryptjs’);
+import * as CTS                         from '../types/common'
 
-// // -- =====================================================================================
+const myCrypto = require('crypto');
 
-// const myCrypt = async ( pass: string ) => {
+// -- =====================================================================================
 
-//     try {
-//         const saltRounds = 10
-//         const salt = await bcryptjs.genSalt( saltRounds )
-//         const hash = await bcryptjs.hash( pass, salt )
-//         return hash
-//     } catch (err) {
-//         console.log("err: " + err);
-//         return 0
-//     }
+// .. Generate a salt
+export const salt = myCrypto.randomBytes(16).toString('hex')
 
-// }
+export const hashPassword = ( password: string, salt: string, iterations = 10000 ): CTS.HashedPass => {
+
+    const hashBytes = 64
+    const digest = 'sha512'
+
+    const hash = myCrypto.pbkdf2Sync( password, salt, iterations, hashBytes, digest )
+
+    return {
+        hash: hash.toString('hex'),
+        salt: salt,
+        iterations: iterations
+    }
+
+}
 
 // -- =====================================================================================
