@@ -58,6 +58,16 @@ CREATE TABLE Patients (
 --     display BOOLEAN
 -- );
 
+-- delete from patients where id >= 13;
+-- delete from Dietitians where id >= 0;
+-- SELECT * FROM public.dietitians;
+SELECT * FROM public.patients;
+-- CREATE TYPE HashedPass AS ( hash VARCHAR, salt VARCHAR, iterations SMALLINT ); 
+-- ALTER TAble patients ALTER COLUMN password TYPE HashedPass;
+-- drop table dietitians;
+-- drop table Patients;
+
+
 --  =======================================================================================
 
 INSERT INTO Patients (email, username, password, firstName, lastName, birthDay, gender) VALUES
