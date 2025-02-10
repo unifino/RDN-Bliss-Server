@@ -20,7 +20,7 @@ type Result = {
 
 export const getPatients = () => {
     return new Promise ( (rs, rx) => {
-        const qry = `SELECT * FROM Patients`;
+        const qry = `SELECT * FROM "Patients"`;
         db.query( qry, ( err, r: Result ) => err ? rx( "E.U.01 " + err ) : rs( r.rows ) );
     } );
 }
@@ -32,11 +32,11 @@ export const getUserByUserName = ( userData: CTS.UserData ): Promise<CTS.UserDat
     return new Promise ( (rs, rx) => {
 
         // .. chcek existence
-        const qry = `SELECT * FROM ${ CTS.UserTypes[ userData.userType ] }s
+        const qry = `SELECT * FROM "${ CTS.UserTypes[ userData.userType ] }s"
             WHERE username = '${ userData.username }'`
-        
+
         db.query( qry, ( err, r: Result ) => {
-            if ( err ) rx( "E.U.02 " + err )
+            if ( err ) rx( "E.U.02 " + err + "\n" + qry )
             else if ( r.rows.length === 0 ) rx( "User Not Found: Username Error" )
             else if ( r.rows.length === 1 ) rs( r.rows[0] )
             else rx( "E.U.03: Duplicated User!" )
@@ -51,7 +51,7 @@ export const getUserByUserName = ( userData: CTS.UserData ): Promise<CTS.UserDat
 export const CheckEmailOrUserExists = ( userData: CTS.UserData ) => {
     return new Promise ( (rs, rx) => {
         // .. chcek existence
-        const qry = `SELECT * FROM ${ CTS.UserTypes[ userData.userType ] }s
+        const qry = `SELECT * FROM "${ CTS.UserTypes[ userData.userType ] }s"
             WHERE username = '${ userData.username }' OR email = '${ userData.email }'`
         db.query( qry, ( err, r: Result ) => {
             if ( err ) rx( "E.U.04 " + err )

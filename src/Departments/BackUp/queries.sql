@@ -1,6 +1,26 @@
-CREATE TYPE Gender AS ENUM ( 'male', 'female' );
 
-CREATE TABLE Dietitians (
+sudo -u postgres -i 
+initdb --locale $LANG -E UTF8 -D '/var/lib/postgres/data/'
+exit
+sudo systemctl enable --now postgresql
+sudo systemctl status postgresql
+sudo -iu postgres psql
+
+
+CREATE ROLE "RDN_Bliss" WITH LOGIN PASSWORD 'RDN';
+GRANT CONNECT ON DATABASE "RDN_Bliss_Server" TO "RDN_Bliss";
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO "RDN_Bliss";
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO "RDN_Bliss";
+ALTER DEFAULT PRIVILEGES IN SCHEMA public 
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO "RDN_Bliss";
+
+
+sudo nano /var/lib/postgres/data/pg_hba.conf << host    all    RDN_Bliss    0.0.0.0/0    md5
+sudo systemctl restart postgresql
+
+CREATE TYPE "Gender" AS ENUM ( 'male', 'female' );
+
+CREATE TABLE "Dietitians" (
     id BIGSERIAL PRIMARY KEY,
     email VARCHAR UNIQUE NOT NULL,
     username VARCHAR UNIQUE NOT NULL,
@@ -8,11 +28,11 @@ CREATE TABLE Dietitians (
     firstName VARCHAR,
     lastName VARCHAR,
     birthDay VARCHAR,
-	gender Gender
+	gender "Gender"
 );
 
-CREATE TABLE Patients (
-    id BIGSERIAL PRIMARY KEY,  
+CREATE TABLE "Patients" (
+    id BIGSERIAL PRIMARY KEY,
     email VARCHAR UNIQUE NOT NULL,
     username VARCHAR UNIQUE NOT NULL,
     password JSONB NOT NULL,
@@ -20,7 +40,7 @@ CREATE TABLE Patients (
     firstName VARCHAR,
     lastName VARCHAR,
     birthDay VARCHAR,
-	gender Gender
+	gender "Gender"
 );
 
 -- CREATE TABLE Home (

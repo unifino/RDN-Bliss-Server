@@ -13,7 +13,7 @@ const cors = require('cors')
 
 // -- ======================================================================== SETUP =======
 
-app.use( cors() ) 
+app.use( cors() )
 app.use( bodyParser.json( { limit: '50mb' } ) );
 app.use( bodyParser.urlencoded( {
     limit: '50mb',
@@ -29,7 +29,7 @@ app.post( CTS.Post.Register, async ( req: express.Request, res: express.Response
 
     // .. requests | assign requests from POST
     const userData: CTS.UserData = req.body
-    
+
     // // .. Process Request by DB Department
     Login.Register( userData )
     // .. everything is good

@@ -31,12 +31,12 @@ export const Login = ( sentData: CTS.UserData ) => {
 // -- ======================================================================================
 
 const checkPassword = ( userData: CTS.UserData, check: string ): Promise<CTS.UserData> => {
-    
+
     return new Promise ( (rs, rx) => {
-        
+
         const org = userData.password as CTS.HashedPass
         const check_hash = hashPassword( check, org.salt, org.iterations )
-        
+
         // .. chcek password
         if ( org.hash === check_hash.hash ) rs( userData )
         else rx( "User Not Found: Password Error" )
@@ -63,7 +63,7 @@ export const Register = ( userData: CTS.UserData ) => {
 // -- ======================================================================================
 
 const InsertNewUser = async ( userData: CTS.UserData ) => {
-    
+
     return new Promise ( (rs, rx) => {
 
         const hashData = hashPassword( userData.password as string, salt );
@@ -80,12 +80,12 @@ const InsertNewUser = async ( userData: CTS.UserData ) => {
         )`
 
         // .. chcek existence
-        const qry = `INSERT INTO ${ CTS.UserTypes[ userData.userType ] }s ${subQry}`
+        const qry = `INSERT INTO "${ CTS.UserTypes[ userData.userType ] }s" ${subQry}`
         db.query( qry, ( err, r: Result ) => {
             if ( err ) rx( "E.L.01 " + err + "\n" + qry )
             else rs( r.rows[0] )
         } )
-    
+
     } );
 
 }
