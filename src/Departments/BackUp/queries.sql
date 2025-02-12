@@ -90,7 +90,7 @@ SELECT * FROM public.patients;
 
 --  =======================================================================================
 
-INSERT INTO Patients (email, username, password, firstName, lastName, birthDay, gender) VALUES
+INSERT INTO "Patients" (email, username, password, firstName, lastName, birthDay, gender) VALUES
 ( 'x', 'x', '{}', 'Hatef', null, 37, 'male' ),
 ( 'y', 'y', '{}', 'Fatemeh', null, 24, 'female' ),
 ( 'z', 'z', '{}', 'Ali', null, 37, 'male' ),
