@@ -16,8 +16,8 @@ export type HashedPass = { hash: string, salt: string, iterations: number }
 
 export enum Gender { null = "Prefer not to Answer", male = "Male", female = "Female" }
 
-export enum MartialStatus { Single, Married, Divorced, Widowed }
-export enum EducationalLevel { 
+export enum MS { Single, Married, Divorced, Widowed }
+export enum Education { 
     DoctoralDegree = "Doctoral Degree",
     MasterDegree = "Master's Degree",
     BachelorDegree = "Bachelor's degree",
@@ -49,17 +49,18 @@ export type Patient = {
     name?: string
     userType?: UserTypes
 
-    martialStatus?: MartialStatus
-    educationalLevel?: EducationalLevel
-    occupation?: string
+    ms?: MS
+    education?: Education|string
+    occupation?: string|string
 
-    GI_F: {
-        [GI_Functions.BowelMovement]: string[]
-        [GI_Functions.Digestion]: string[]
-        [GI_Functions.Appetite]: string[]
-    }
+    GI_F: GI_F
 }
 
+export type GI_F = {
+    [GI_Functions.BowelMovement]: string[]
+    [GI_Functions.Digestion]: string[]
+    [GI_Functions.Appetite]: string[]
+}
 
 export enum GI_Functions { 
     BowelMovement = "Bowel Movement",
