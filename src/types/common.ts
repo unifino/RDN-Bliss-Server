@@ -14,26 +14,35 @@ export type HashedPass = { hash: string, salt: string, iterations: number }
 
 // -- =====================================================================================
 
-export enum Gender { null = "Prefer not to Answer", male = "Male", female = "Female" }
+export enum Gender { null = "?", male = "Male", female = "Female" }
 
-export enum MS { Single, Married, Divorced, Widowed }
+export enum MS { 
+    Title = "Martial Status",
+    Single = "Single", 
+    Married = "Married", 
+    Divorced = "Divorced", 
+    Widowed = "Widowed" 
+}
+
 export enum Education { 
+    Title = "Educational Level",
     DoctoralDegree = "Doctoral Degree",
     MasterDegree = "Master's Degree",
-    BachelorDegree = "Bachelor's degree",
-    AssociateDegree = "Associate degree or diploma",
-    SecondaryHighSchool = "Secondary High School education",
+    BachelorDegree = "Bachelor's Degree",
+    AssociateDegree = "Associate Degree | Diploma",
+    SecondaryHighSchool = "High School Education",
     PrimaryEducation = "Primary Education",
     Uneducated = "Uneducated"
 }
 
-export enum occupation {
-    art = "Arts and entertainment",
-    business = "Business administration",
-    industry = "Industrial and manufacturing",
-    law = "Law enforcement and armed forces",
-    science = "Science and technology",
-    null = ""
+export enum Occupation {
+    Title = "Occupation",
+    art = "Arts & Entertainment",
+    business = "Business Administration",
+    industry = "Industrial & Manufacturing",
+    law = "Law Enforcement | Armed Forces",
+    science = "Science and Technology",
+    null = "Other"
 }
 
 export type Patient = {
