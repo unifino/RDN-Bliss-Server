@@ -97,3 +97,14 @@ export type UserData = Dietitian | Patient;
 export enum UserTypes { "Dietitian", "Patient", null }
 
 // -- =====================================================================================
+
+export enum Basket { 
+    Protein = "Protein", 
+    Vegtable = "Vegtable", 
+    Fruit = "Fruit", 
+    Carbo = "Carbo", 
+    Fat = "Fat", 
+    Beverage = "Beverage" 
+}
+
+// -- =====================================================================================
